@@ -83,8 +83,14 @@ function removeProperties(obj, keys) {
  *    compareObjects({a: 1, b: 2}, {a: 1, b: 2}) => true
  *    compareObjects({a: 1, b: 2}, {a: 1, b: 3}) => false
  */
-function compareObjects(/* obj1, obj2 */) {
-  throw new Error('Not implemented');
+function compareObjects(obj1, obj2) {
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  return (
+    keys1.length === keys2.length &&
+    keys1.every((key) => obj1[key] === obj2[key])
+  );
 }
 
 /**
@@ -98,8 +104,9 @@ function compareObjects(/* obj1, obj2 */) {
  *    isEmptyObject({}) => true
  *    isEmptyObject({a: 1}) => false
  */
-function isEmptyObject(/* obj */) {
-  throw new Error('Not implemented');
+function isEmptyObject(obj) {
+  const arr = Object.keys(obj);
+  return arr.length === 0;
 }
 
 /**
@@ -118,8 +125,8 @@ function isEmptyObject(/* obj */) {
  *    immutableObj.newProp = 'new';
  *    console.log(immutableObj) => {a: 1, b: 2}
  */
-function makeImmutable(/* obj */) {
-  throw new Error('Not implemented');
+function makeImmutable(obj) {
+  return Object.freeze(obj);
 }
 
 /**
@@ -132,8 +139,26 @@ function makeImmutable(/* obj */) {
  *    makeWord({ a: [0, 1], b: [2, 3], c: [4, 5] }) => 'aabbcc'
  *    makeWord({ H:[0], e: [1], l: [2, 3, 8], o: [4, 6], W:[5], r:[7], d:[9]}) => 'HelloWorld'
  */
-function makeWord(/* lettersObject */) {
-  throw new Error('Not implemented');
+function makeWord(lettersObject) {
+  let maxValue = -1;
+
+  Object.values(lettersObject).forEach((value) => {
+    for (let i = 0; i < value.length; i += 1) {
+      if (value[i] > maxValue) {
+        maxValue = value[i];
+      }
+    }
+  });
+
+  const rec = Array.from({ length: maxValue + 1 }, () => '');
+
+  Object.entries(lettersObject).forEach(([key, value]) => {
+    for (let i = 0; i < value.length; i += 1) {
+      rec[value[i]] = key;
+    }
+  });
+
+  return rec.join('');
 }
 
 /**
